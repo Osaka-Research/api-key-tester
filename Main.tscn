@@ -1,0 +1,193 @@
+[gd_scene load_steps=4 format=3 uid="uid://d3apikeytester"]
+
+[ext_resource type="Script" path="res://Main.gd" id="1_main"]
+
+[sub_resource type="StyleBoxFlat" id="Box_1"]
+bg_color = Color(0.83, 0.83, 0.8, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.35, 0.35, 0.35, 1)
+corner_radius_top_left = 0
+corner_radius_top_right = 0
+corner_radius_bottom_right = 0
+corner_radius_bottom_left = 0
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_1"]
+size = Vector2(60, 60)
+
+[sub_resource type="StandardMaterial3D" id="FloorMat"]
+albedo_color = Color(0.72, 0.72, 0.69, 1)
+
+[node name="Main" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_main")
+
+[node name="World" type="Node3D" parent="."]
+
+[node name="Camera3D" type="Camera3D" parent="World"]
+transform = Transform3D(1, 0, 0, 0, 0.906308, 0.422618, 0, -0.422618, 0.906308, 0, 2.2, 4.5)
+current = true
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="World"]
+transform = Transform3D(0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, -0.75, 0.433013, 0, 3, 0)
+shadow_enabled = true
+
+[node name="Floor" type="MeshInstance3D" parent="World"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.6, 0)
+mesh = SubResource("PlaneMesh_1")
+surface_material_override/0 = SubResource("FloorMat")
+
+[node name="Spawned" type="Node3D" parent="World"]
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -420.0
+offset_top = -430.0
+offset_right = 420.0
+offset_bottom = 430.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("Box_1")
+
+[node name="Margin" type="MarginContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 28
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 28
+
+[node name="Rows" type="VBoxContainer" parent="Panel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Title" type="Label" parent="Panel/Margin/Rows"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "API Key Tester"
+horizontal_alignment = 1
+
+[node name="ProviderLabel" type="Label" parent="Panel/Margin/Rows"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "Provider:"
+
+[node name="ProviderSelect" type="OptionButton" parent="Panel/Margin/Rows"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 48)
+theme_override_font_sizes/font_size = 22
+item_count = 3
+selected = 0
+popup/item_0/text = "OpenAI"
+popup/item_0/id = 0
+popup/item_1/text = "Anthropic"
+popup/item_1/id = 1
+popup/item_2/text = "MiniMax"
+popup/item_2/id = 2
+
+[node name="UrlLabel" type="Label" parent="Panel/Margin/Rows"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "Endpoint URL:"
+
+[node name="UrlInput" type="LineEdit" parent="Panel/Margin/Rows"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 48)
+theme_override_font_sizes/font_size = 22
+text = "https://api.openai.com/v1/models"
+
+[node name="KeyLabel" type="Label" parent="Panel/Margin/Rows"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "API key:"
+
+[node name="KeyInput" type="LineEdit" parent="Panel/Margin/Rows"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 48)
+theme_override_font_sizes/font_size = 22
+placeholder_text = "paste your OpenAI key here (sk-...)"
+secret = true
+
+[node name="Spacer1" type="Control" parent="Panel/Margin/Rows"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="TestButton" type="Button" parent="Panel/Margin/Rows"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 56)
+theme_override_font_sizes/font_size = 26
+text = "Test Key"
+
+[node name="Spacer2" type="Control" parent="Panel/Margin/Rows"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="StatusBox" type="Panel" parent="Panel/Margin/Rows"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+theme_override_styles/panel = SubResource("Box_1")
+
+[node name="StatusLabel" type="Label" parent="Panel/Margin/Rows/StatusBox"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 24
+text = "idle."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Spacer3" type="Control" parent="Panel/Margin/Rows"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="TokenSliderLabel" type="Label" parent="Panel/Margin/Rows"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Max tokens per request: 1500"
+
+[node name="TokenSlider" type="HSlider" parent="Panel/Margin/Rows"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 32)
+min_value = 50.0
+max_value = 10000000.0
+step = 1.0
+value = 1500.0
+exp_edit = true
+
+[node name="BuildButton" type="Button" parent="Panel/Margin/Rows"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 56)
+theme_override_font_sizes/font_size = 24
+text = "Start Building World (uses key above)"
+
+[node name="BuildStatusLabel" type="Label" parent="Panel/Margin/Rows"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "world builder idle."
+horizontal_alignment = 1
+
+[node name="HTTPRequest" type="HTTPRequest" parent="."]
+
+[node name="AIRequest" type="HTTPRequest" parent="."]
+
+[node name="BuildTimer" type="Timer" parent="."]
+wait_time = 4.0
